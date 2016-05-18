@@ -141,12 +141,11 @@ public class MainActivity extends Activity implements OnClickListener{
 	    	intent.putExtra("videopath", path);
 	    	startActivity(intent);
 	    }
-	   	
 	   private void showHintDialog()
 		{
 			new AlertDialog.Builder(this)
 			.setTitle("提示")
-			.setMessage("本SDK版本是2016518, 不免费,大概每三天会更新一次,欢迎联系我们!!")
+			.setMessage("此SDK版本是2016518,预览版本,我们每三天会更新一次. 欢迎联系我们!!")
 	        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
 				
 				@Override
