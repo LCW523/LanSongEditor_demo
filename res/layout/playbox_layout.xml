@@ -1,0 +1,100 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+ 
+      <com.lansosdk.box.PlayBoxView
+            android:id="@+id/playbox_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+  
+    <LinearLayout 
+        android:id="@+id/id_playbox_control_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button 
+            android:id="@+id/id_playbox_start"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="播放"
+            android:layout_margin="5dip"/>
+        <Button 
+            android:id="@+id/id_playbox_pause"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="暂停"
+            android:layout_margin="5dip"/>
+    </LinearLayout>
+    
+    
+	   <TextView 
+            android:id="@+id/id_playbox_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="总时长"
+            android:layout_margin="5dip"/>   
+            
+		 <LinearLayout 
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+       		 android:layout_marginTop="30dip"
+              android:orientation="horizontal">
+              
+              <TextView 
+                  android:layout_width="0dip"
+                  android:layout_weight="2"
+                  android:layout_height="wrap_content"
+                  android:text="旋转"/>
+                <SeekBar 
+			      android:id="@+id/id_playbox_skbar_rotate1"
+			      android:layout_width="0dip"
+			      android:layout_weight="6"
+			      android:layout_height="wrap_content"
+			      android:layout_margin="5dip"/>
+          </LinearLayout>
+          
+	    	 <LinearLayout 
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+       		 android:layout_marginTop="30dip"
+              android:orientation="horizontal">
+              
+              <TextView 
+                  android:layout_width="0dip"
+                  android:layout_weight="2"
+                  android:layout_height="wrap_content"
+                  android:text="缩放"/>
+                <SeekBar 
+			      android:id="@+id/id_playbox_skbar_scale1"
+			      android:layout_width="0dip"
+			      android:layout_weight="6"
+			      android:layout_height="wrap_content"
+			      android:layout_margin="5dip"/>
+          </LinearLayout>    
+	        
+	    <LinearLayout 
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+       		 android:layout_marginTop="30dip"
+              android:orientation="horizontal">
+              
+              <TextView 
+                  android:layout_width="0dip"
+                  android:layout_weight="2"
+                  android:layout_height="wrap_content"
+                  android:text="平移"/>
+                <SeekBar 
+			      android:id="@+id/id_playbox_skbar_move1"
+			      android:layout_width="0dip"
+			      android:layout_weight="6"
+			      android:layout_height="wrap_content"
+			      android:layout_margin="5dip"/>
+          </LinearLayout>
+</LinearLayout>

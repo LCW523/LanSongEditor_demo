@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LanSongEditorDemo</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+	<string name="video_editor_demo_hint">此演示功能是:解码==>画面裁剪(比如1280x720的画面裁剪成240x240)==>编码输出,保存在/sdcard/video_demo_framecrop.mp4中.\n\n,
+	    您可以向executeVideoEditor()这个方法中填写任何的ffmpeg命令字符串\n\nQQ1852600324</string>
+    
+	<string name="sdk_hnit">本SDK(20160518)一直更新,欢迎使用,我们专业做视频处理的API,利用我们的API,您可以做出类似秒拍,美拍等各种效果,欢迎联系,QQ1852600324 \n email:support@lansongtech.com"</string>
+	
+	<string name="playbox_hint">我们设计了一个视频画板类PlayBoxView,像画画用的画板一样,您可以向内部增删:</string>
+	<string name="video">视频</string>
+	<string name="picture">图片</string>
+	<string name="colorblock">颜色块</string>
+	<string name="line">线条</string>
+	<string name="view">View</string>
+	<string name="word">文字</string>
+	<string name="here_is_only_demo">增加后的画面,会实时的形成新的视频.这里仅仅是演示,详细文档正在整理中...请稍等,或联系我们,谢谢</string>
+	
+</resources>
