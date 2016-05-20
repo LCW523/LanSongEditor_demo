@@ -284,10 +284,11 @@ public class VideoEditor {
 	 */
 	private native int avReverse( String srcPath1,String decoder,String dstPath);
 	    //--------------------------------------------------------------------------
-	    /**
-		  * 删除多媒体文件中的音频
+	   /**
+		  * 删除多媒体文件中的音频,把多媒体中的视频部分提取出来，这样提出的视频播放，就没有声音了，
+		  * 适用在当想给一个多媒体文件更换声音的场合的。您可以用这个方法删除声音后，通过{@link executeVideoEditor} 重新为视频增加一个声音。
 		  * @param srcFile  输入的MP4文件
-		  * @param dstFile 输出文件的绝对路径,路径的文件名类型是.mp4
+		  * @param dstFile 删除音频后的多媒体文件的输出绝对路径,路径的文件名类型是.mp4
 		  * @return 返回执行的结果.
 		  */
 		  public int executeDeleteAudio(String srcFile,String dstFile)
@@ -311,7 +312,7 @@ public class VideoEditor {
 			  	}
 		  }
 		  /**
-		   * 把多媒体中的音频提取出来,保存到文件中.
+		   * 删除多媒体文件中的视频部分，一个mp4文件如果是音频和视频一起的，等于提取多媒体文件中的音频，
 		   *  
 		   * @param srcFile  要处理的多媒体文件,里面需要有视频
 		   * @param dstFile  删除视频部分后的音频保存绝对路径, 注意:如果多媒体中是音频是aac压缩,则后缀必须是aac. 如果是mp3压缩,则后缀必须是mp3,
@@ -341,15 +342,17 @@ public class VideoEditor {
 			    return  executeVideoEditor(command);
 		  }
 		  /**
-		   * 音频和视频合成为多媒体格式.
+		   * 音频和视频合成为多媒体文件，等于给视频增加一个音频。
+		    当前版本近测试了，把一个没有音频的mp4文件和 一个音频合成为多媒体格式.
+		   
 		   * @param videoFile 输入的视频文件
 		   * @param audioFile 输入的音频文件
-		   * @param dstFile  合成后的输出
+		   * @param dstFile  合成后的输出，文件名的后缀是.mp4
 		   * @return 返回执行的结果.
 		   * 
 		   * 注意:如果合并的音频是aac格式,ffmpeg -i test.mp4 -i test.aac -vcodec copy -acodec copy -absf aac_adtstoasc shanchu4.mp4
 		   */
-		  public int executeVideoMergeAudio(String videoFile,String audioFile,String dstFile)
+		  public int executeVideoBindAudio(String videoFile,String audioFile,String dstFile)
 		  {
 			  boolean isAAC=false;
 			  if(dstFile.endsWith(".mp4")==false){
@@ -388,11 +391,11 @@ public class VideoEditor {
 			  }
 		  }
 		  /**
-		   * 
-		   * @param videoFile
-		   * @param audioFile
-		   * @param dstFile
-		   * @param audiostartS
+		   * 给视频MP4增加上音频，audiostartS表示从从音频的哪个时间点开始增加，单位是秒
+		   * @param videoFile  原视频文件
+		   * @param audioFile  需要增加的音频文件
+		   * @param dstFile  处理后保存的路径 文件名的后缀需要.mp4格式
+		   * @param audiostartS  音频增加的时间点，单位秒，类型float，可以有小数，比如从音频的2.35秒开始增加到视频中。
 		   * @return
 		   */
 		  public int executeVideoMergeAudio(String videoFile,String audioFile,String dstFile,float audiostartS)
@@ -436,12 +439,13 @@ public class VideoEditor {
 			  }
 		  }
 		  /**
+		   * 给视频文件增加一个音频
 		   * 输出文件后缀是.mp4格式.
 		   * @param videoFile
 		   * @param audioFile
 		   * @param dstFile
 		   * @param audiostartS  音频开始时间, 单位秒,可以有小数, 比如2.5秒
-		   * @param audiodurationS 音频增加的总时长.
+		   * @param audiodurationS 音频增加的总时长.您可以只增加音频中一部分，比如增加音频的2.5秒到--180秒这段声音到视频文件中，则这里的参数是180
 		   * @return
 		   */
 		  public int executeVideoMergeAudio(String videoFile,String audioFile,String dstFile,float audiostartS,float audiodurationS)
@@ -491,11 +495,12 @@ public class VideoEditor {
 			  }
 		  }
 		  /**
-		   * 裁剪视频文件.(包括视频文件中的音频部分和视频部分)
-		   * @param videoFile
-		   * @param dstFile
-		   * @param startS   开始位置
-		   * @param durationS  裁剪时长.
+		   * 
+		   * 裁剪mp4文件.(包括视频文件中的音频部分和视频部分)
+		   * @param videoFile  原视频文件 文件格式是mp4
+		   * @param dstFile   裁剪后的视频路径， 路径的后缀名是.mp4
+		   * @param startS   开始裁剪位置，单位是秒，
+		   * @param durationS  需要裁剪的时长，单位秒，比如您可以从原视频的8.9秒出开始裁剪，裁剪２分钟，则这里的参数是　１２０
 		   * @return
 		   */
 		  public int executeVideoCutOut(String videoFile,String dstFile,float startS,float durationS)
@@ -536,9 +541,10 @@ public class VideoEditor {
 		  }
 		  /**
 		   * 获取视频的所有帧图片,并保存到指定路径.
+		   * 这条命令是把视频中的所有帧都提取成图片，适用于视频比较短的场合，比如一秒钟是２５帧，视频总时长是10秒，则会提取250帧图片，保存到您指定的路径
 		   * @param videoFile  
 		   * @param dstDir  目标文件夹绝对路径.
-		   * @param jpgPrefix   保存图片文件的前缀
+		   * @param jpgPrefix   保存图片文件的前缀，可以是png或jpg
 		   * @return
 		   * 
 		   * ./ffmpeg -i tenSecond.mp4 -qscale:v 2 output_%03d.jpg
@@ -631,19 +637,24 @@ public class VideoEditor {
 			  }
 		  }
 		  
-//		  ./ffmpeg -i 0.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts ts0.ts
-//		  ./ffmpeg -i 1.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts ts1.ts
-//		  ./ffmpeg -i 2.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts ts2.ts
-//		  ./ffmpeg -i 3.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts ts3.ts
-//		  ./ffmpeg -i "concat:ts0.ts|ts1.ts|ts2.ts|ts3.ts" -c copy -bsf:a aac_adtstoasc out2.mp4
+
 		  /**
-		   * 
-		   * @param mp4Path
-		   * @param dstTs
+		   * 把mp4文件转换位TS流，
+		   * 此命令和{＠link #executeConvertTsToMp4}结合,可以实现把多个mp4文件拼接成一个mp4文件。
+		   * 适用在当你需要把录制好的多段视频拼接成一个mp4的场合，或者你先把一个mp4文件裁剪成多段，然后把其中几段视频拼接在一起
+		   * 或者你想把两个视频增加一个转场的效果，
+		   * @param mp4Path　输入的mp4文件路径
+		   * @param dstTs　转换后保存的ts路径，后缀名需要是.ts
 		   * @return
 		   */
 		  public int executeConvertMp4toTs(String mp4Path,String dstTs)
 		  {
+		  	//		  ./ffmpeg -i 0.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts ts0.ts
+//		  ./ffmpeg -i 1.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts ts1.ts
+//		  ./ffmpeg -i 2.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts ts2.ts
+//		  ./ffmpeg -i 3.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts ts3.ts
+//		  ./ffmpeg -i "concat:ts0.ts|ts1.ts|ts2.ts|ts3.ts" -c copy -bsf:a aac_adtstoasc out2.mp4
+
 			  if(mp4Path.endsWith(".mp4")==false){
 				  return VIDEO_EDITOR_EXECUTE_FAILED;
 			  }
@@ -675,9 +686,11 @@ public class VideoEditor {
 			  }
 		  }
 		  /**
-		   * 注意:输入的各个流需要编码参数一致,适用于断点拍照,拍照多段视频,然后合并的场合.
-		   * @param tsArray
-		   * @param dstFile
+		   * 把多段ｔｓ流拼接在一起，然后保存成mp4格式
+		   * 注意:输入的各个流需要编码参数一致,
+		   * 适用于断点拍照,拍照多段视频; 或者想在两段视频中增加一个转场的视频
+		   * @param tsArray　多段ts流的数组
+		   * @param dstFile　　处理后保存的路径,文件后缀名需要是.mp4
 		   * @return
 		   * ./ffmpeg -i "concat:ts0.ts|ts1.ts|ts2.ts|ts3.ts" -c copy -bsf:a aac_adtstoasc out2.mp4
 		   */
@@ -717,13 +730,13 @@ public class VideoEditor {
 		  }
 		  
 		  /**
-		   * 
-		   * @param videoFile
-		   * @param cropWidth
-		   * @param cropHeight
-		   * @param x
-		   * @param y
-		   * @param dstFile
+		   * 裁剪一个mp4分辨率，把视频画面的某一部分裁剪下来，
+		   * @param videoFile　　需要裁剪的视频文件
+		   * @param cropWidth　　裁剪的宽度
+		   * @param cropHeight　裁剪的高度
+		   * @param x　　视频画面开始的Ｘ坐标，　从画面的左上角开始是0.0坐标
+		   * @param y　　视频画面开始的Y坐标，
+		   * @param dstFile　　处理后保存的路径,后缀需要是mp4
 		   * @return
 		   *  ./ffmpeg -i test_720p.mp4 -vf crop=480:480:0:0 -acodec copy testcrop.mp4,暂时使用软编码,后面再优化硬编码
 		   */
@@ -747,7 +760,6 @@ public class VideoEditor {
 					cmdList.add("copy");
 					
 					cmdList.add("-vcodec");
-//					cmdList.add("libx264");
 					cmdList.add("lansoh264_enc"); 
 					
 					cmdList.add("-pix_fmt");  //编码的时候,指定yuv420p
@@ -768,12 +780,13 @@ public class VideoEditor {
 		  
 		 /**
 		  * 视频画面缩放, 务必保持视频的缩放后的宽高比,等于原来视频的宽高比.
+		  * 此视频缩放算法，采用是软缩放来实现，速度不是很快，适用在时长短的视频。　我们有更快速的视频缩放方法，请联系我们
 		  * @param videoFile
 		  * @param scaleWidth
 		  * @param scaleHeight
 		  * @param dstFile
 		  * @return
-		  * ./ffmpeg -i test_720p.mp4 -vf scale=480:270 -acodec copy scale1.mp4  ,暂时使用软编码,后面再优化硬编码
+		  * ./ffmpeg -i test_720p.mp4 -vf scale=480:270 -acodec copy scale1.mp4  
 		  */
 		  public int executeVideoFrameScale(String videoFile,int scaleWidth,int scaleHeight,String dstFile){
 			  if(FileUtils.fileExist(videoFile)){
@@ -812,11 +825,13 @@ public class VideoEditor {
 			  }
 		  }
 		  /**
-		   * 
-		   * @param picDir
-		   * @param jpgprefix
-		   * @param framerate
-		   * @param dstPath
+		   * 把多张图片转换为视频
+		   * 注意：　这里的多张图片必须在同一个文件夹下，并且命名需要有规律,比如名字是 r5r_001.jpeg r5r_002.jpeg, r5r_003.jpeg等
+		   * 多张图片，需要统一的分辨率，如分辨率不同，则以第一张图片的分辨率为准，后面的分辨率自动缩放到第一张图片的分辨率带大小
+		   * @param picDir　保存图片的文件夹
+		   * @param jpgprefix　图片的文件名有规律的前缀
+		   * @param framerate　每秒钟需要显示几张图片
+		   * @param dstPath　　处理后保存的路径，需要文件后缀是.mp4
 		   * @return
 		   */
 		  //./ffmpeg -framerate 1 -i r5r-%03d.jpeg -c:v libx264 -r 25 -pix_fmt yuv420p out33.mp4
@@ -852,54 +867,21 @@ public class VideoEditor {
 				    return  executeVideoEditor(command);
 		  }
 		  
-		  //OK, PASS 2016年4月2日12:43:55
-		  public int executeTestOverlay()
-		  {
-			  //./ffmpeg -i /sdcard/miaopai.mp4 -i /sdcard/miaopai_mv.ts -filter_complex 'overlay=main_w-overlay_w-10:main_h-overlay_h-10' -acodec copy -vcodec libx264 ou22.mp4
-			  //  -  -  .mp4
-				List<String> cmdList=new ArrayList<String>();
-				cmdList.add("-vcodec");
-				cmdList.add("lansoh264_dec");
-				cmdList.add("-i");
-				cmdList.add("/sdcard/miaopai.mp4");
-				
-				cmdList.add("-vcodec");
-				cmdList.add("lansoh264_dec");
-				
-				cmdList.add("-i");
-				cmdList.add("/sdcard/dream-480-480.mp4");
-
-				cmdList.add("-filter_complex");
-				cmdList.add("overlay=main_w-overlay_w-10:main_h-overlay_h-10");
-				
-				cmdList.add("-acodec");
-				cmdList.add("copy");
-				
-				cmdList.add("-vcodec");
-				cmdList.add("lansoh264_enc");
-				
-				cmdList.add("-y");
-				
-				cmdList.add("/sdcard/ou22.mp4");
-				String[] command=new String[cmdList.size()];  
-			     for(int i=0;i<cmdList.size();i++){  
-			    	 command[i]=(String)cmdList.get(i);  
-			     }  
-			    return  executeVideoEditor(command);
-		  }
+		 
 		  /**
-		   * 
-		   * @param videoFile
-		   * @param imagePngPath
-		   * @param x
-		   * @param y
-		   * @param dstFile
+		   * 为视频增加图片，图片可以是带透明的png类型，也可以是jpg类型;
+		   * 适用在为视频增加logo，或增加一些好玩的图片的场合，
+		   * 以下两条方法，也是叠加图片，不同的是可以指定叠加时间段
+		   * 我们有另外的视频叠加图片，视频叠加视频的类，可以实现视频或图片的缩放，移动，旋转等动作，请联系我们
+		   * @param videoFile　原视频
+		   * @param imagePngPath　　png图片的路径
+		   * @param x　　叠加图片相对于视频的Ｘ坐标，视频的左上角为坐标原点0.0
+		   * @param y　　叠加图片相对于视频的Ｙ坐标
+		   * @param dstFile　　处理后保存的路径，后缀需要是.mp4格式
 		   * @return
 		   */
 		  public int executeAddWaterMark(String videoFile,String imagePngPath,int x,int y,String dstFile){
 			  //./ffmpeg -i miaopai.mp4 -i watermark.png -filter_complex "overlay=0:0" -acodec copy out2.mp4  
-			  //大概6秒钟.
-			  //测试两个图片同时增加的版本!!!,一个右上角,另一个在文件最后2秒钟增加.
 			  
 			  if(FileUtils.fileExist(videoFile)){
 					List<String> cmdList=new ArrayList<String>();
@@ -937,48 +919,19 @@ public class VideoEditor {
 				  return VIDEO_EDITOR_EXECUTE_FAILED;
 			  }
 		  }
-		  /*
-		   *测试发现,一个10秒的视频,做透明处理后,大概需要20秒的时间.
-	*/
-		  public int executeTestOverlay2()
-		  {
-			  //./ffmpeg -i /sdcard/miaopai.mp4 -i /sdcard/miaopai_mv.ts -filter_complex 'overlay=main_w-overlay_w-10:main_h-overlay_h-10' -acodec copy -vcodec libx264 ou22.mp4
-			  //  -  -  .mp4
-				List<String> cmdList=new ArrayList<String>();
-					cmdList.add("-vcodec");
-					cmdList.add("lansoh264_dec");
-					cmdList.add("-i");
-					cmdList.add("/sdcard/miaopai.mp4");
-					cmdList.add("-vcodec");
-					cmdList.add("lansoh264_dec");
-					cmdList.add("-i");
-					cmdList.add("/sdcard/dream-480-480.mp4");
-					
-			  	   cmdList.add("-filter_complex");
-			  	   String filter="[1:v] format=rgba,colorchannelmixer=1:0:0:0:0:1:0:0:0:0:1:0:0:0:0:0.3 [a]; [0:v][a] overlay=0:0:eof_action=repeat";
-				   cmdList.add(filter);
-				   String filename = "/sdcard/VideoDemo1.mp4";
-				   cmdList.add("-acodec");
-				   cmdList.add("copy");
-				   cmdList.add("-vcodec");
-				   cmdList.add("lansoh264_enc");
-				   cmdList.add("-y");
-				   cmdList.add(filename);
-				String[] command=new String[cmdList.size()];  
-			     for(int i=0;i<cmdList.size();i++){  
-			    	 command[i]=(String)cmdList.get(i);  
-			     }  
-			    return  executeVideoEditor(command);
-		  }
+	
 		 /**
+		  * 为视频增加图片，图片可以是带透明的png类型，也可以是jpg类型;
+		  * 适用在为视频增加logo，或增加一些好玩的图片的场合，
+		  * 以下两条方法，也是叠加图片，不同的是可以指定叠加时间段
 		  * 在某段时间区间内叠加.
 		  * @param videoFile
 		  * @param imagePngPath
-		  * @param startTimeS
-		  * @param endTimeS
-		  * @param x
-		  * @param y
-		  * @param dstFile
+		  * @param startTimeS　　开始时间，单位是秒，类型float，比如从20.8秒处开始
+		  * @param endTimeS　　　结束时间，单位是秒，类型float 比如在30秒处结束
+		  * @param x　　叠加图片相对于视频的Ｘ坐标，视频的左上角为坐标原点0.0
+		  * @param y　　叠加图片相对于视频的Ｙ坐标
+		  * @param dstFile  处理后保存的路径，后缀需要是mp4格式
 		  * @return
 		  */
 		  public int executeAddWaterMark(String videoFile,String imagePngPath,float startTimeS,float endTimeS,int x,int y,String dstFile)
@@ -1021,8 +974,8 @@ public class VideoEditor {
 			  }
 		  }
 		  /**
-		   * 
-		   * @param cfg
+		   * 为视频叠加两张图片，并同时指定开始结束时间，坐标等。
+		   * @param cfg　　
 		   * @return
 		   */
 		  public int executeAddWaterMark(WaterMarkConfig cfg)
@@ -1072,25 +1025,4 @@ public class VideoEditor {
 				  return VIDEO_EDITOR_EXECUTE_FAILED;
 			  }
 		  } 
-//		  private void demoVideoGray()
-//		  {
-//			  	List<String> cmdList=new ArrayList<String>();
-//		    	cmdList.add("-vcodec");
-//		    	cmdList.add("lansoh264_dec");  //使用我们的硬解码加速
-//				cmdList.add("-i");
-//				cmdList.add(videoPath);
-//				cmdList.add("-vf");
-//				cmdList.add("format=gray");
-//				cmdList.add("-vcodec");
-//				cmdList.add("lansoh264_enc"); //使用我们的硬编码加速
-//				cmdList.add("-strict");
-//				cmdList.add("-2");
-//				cmdList.add("-y");
-//				cmdList.add("/sdcard/video_demo_gray.mp4");
-//				String[] command=new String[cmdList.size()];  
-//			     for(int i=0;i<cmdList.size();i++){  
-//			    	 command[i]=(String)cmdList.get(i);  
-//			     }  
-//			     mVideoEditor.executeVideoEditor(command);
-//		  }
 }
