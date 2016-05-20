@@ -131,138 +131,155 @@ public class VideoEditor {
 	public native int  pictureFadeInOut( String srcPath,int totalTime,int fadeinstart,int fadeinCnt,int fadeoutstart,int fadeoutCnt,
 		   String dstPath);
 	/**
-	 * 
-	 * @param srcPath
-	 * @param totalTime
-	 * @param fadeinstart
-	 * @param fadeinCnt
-	 * @param dstPath
+	 * 把一张图片转换为视频，视频在刚显示时，会有缓慢显示出来的动画效果。适用在视频转场的场合。
+	 * @param srcPath　　原png或jpg图片
+	 * @param totalTime　　转换为视频的总时长
+	 * @param fadeinstart　　从第几帧开始缓慢显示出来，建议从0
+	 * @param fadeinCnt  缓慢显示出来的帧数，比如效果持续２秒钟，则这里是2x25
+	 * @param dstPath　　视频保存的路径，后缀需要是.mp4格式
 	 * @return
 	 */
 	private native int  pictureFadeIn( String srcPath,int totalTime,int fadeinstart,int fadeinCnt,String dstPath);
 	/**
-	 * 
-	 * @param srcPath
-	 * @param totalTime
-	 * @param fadeoutstart
-	 * @param fadeoutCnt
-	 * @param dstPath
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 * 把一张图片转换为视频，图片在显示结束的时候，有慢慢变暗下去的效果。如果ｐｎｇ视频有透明部分，则透明部分转换为黑色
+	 * @param srcPath　　图片的路径，可以是ｐｎｇ或ｊｐｇ，
+	 * @param totalTime　　图片转换成视频的总时间
+	 * @param fadeoutstart　　慢慢变暗下的开始帧，比如从５０帧的地方开始变暗，总帧数等于总时间x25（视频每秒钟25帧）
+	 * @param fadeoutCnt　　　慢慢变暗效果的帧数，比如效果持续２秒钟，则这里是2x25
+	 * @param dstPath    　　视频保存的路径，后缀需要是.mp4格式
 	 * @return
 	 */
 	private native int  pictureFadeOut( String srcPath,int totalTime,int fadeoutstart,int fadeoutCnt,String dstPath);
 	/**
-	 * 
-	 * @param srcVideoPath
-	 * @param srcPngPath
-	 * @param totalTime
-	 * @param offsetTime
-	 * @param fadeinStart
-	 * @param fadeoutCnt
-	 * @param x
-	 * @param y
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 *  给视频增加一个水印，这个水印有渐渐显示出来的效果
+	 *　注意：　这个方法当前没有进度条。
+	 * @param srcVideoPath　　　需要加水印的视频路径
+	 * @param srcPngPath　　　水印图片的路径，需要是png格式
+	 * @param totalTime　　　水印png的总时间，建议２秒
+	 * @param offsetTime　　　从视频的哪个时间点开始增加，单位是秒，
+	 * @param fadeinStart　　水印图片的开始帧，一般是０；
+	 * @param fadeoutCnt　　　　水印图片的渐渐显示的总帧数，如果渐渐显示的效果是２秒，则是2x25=50帧，这里填５０
+	 * @param x　　　水印图片相对于视频画面的ｘ坐标，　视频的左上角为０.0
+	 * @param y   水印图片相对于视频画面的ｙ坐标
 	 * @param dstPath
 	 * @return
 	 */
 	private native int  pngFadeIn( String srcVideoPath,String srcPngPath,int totalTime,int offsetTime,int fadeinStart,int fadeoutCnt,int x,int y,String dstPath);
 	/**
-	 * 
-	 * @param srcPath
-	 * @param decoder
-	 * @param angle
-	 * @param dstPath
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 * 给视频旋转角度
+	 * @param srcPath　需要旋转角度的原视频
+	 * @param decoder　　视频的解码器名字
+	 * @param angle　　角度
+	 * @param dstPath　　处理后的视频存放的路径,后缀需要是.mp4
 	 * @return
 	 */
 	private native int  videoRotateAngle( String srcPath,String decoder,float angle,String dstPath);
 	/**
-	 * 
-	 * @param srcPath
-	 * @param decoder
-	 * @param speed
-	 * @param dstPath
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 * 调整视频的播放速度，　可以把视频加快速度，或放慢速度。适用在希望缩短视频中不重要的部分的场景，比如走路等
+	 * @param srcPath　　源视频
+	 * @param decoder　　指定视频的解码器名字
+	 * @param speed　　　　源视频中　　画面和音频同时改变的倍数，比如放慢一倍，则这里是0.5;加快一倍，这里是２；建议速度在0.5--2.0之间。
+	 * @param dstPath　　处理后的视频存放路径，后缀需要是.mp4
 	 * @return
 	 */
 	private native int  videoAdjustSpeed( String srcPath,String decoder,float speed,String dstPath);
 	/**
-	 * 
-	 * @param srcPath
-	 * @param decoder
-	 * @param dstPath
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 * 视频水平镜像，即把视频左半部分镜像显示在右半部分
+	 * @param srcPath　源视频路径
+	 * @param decoder　　指定解码器
+	 * @param dstPath　　目标视频路径
 	 * @return
 	 */
 	private native int  videoMirrorH( String srcPath,String decoder,String dstPath);
 	/**
-	 * 
-	 * @param srcPath1
-	 * @param srcPath2
-	 * @param vol1
-	 * @param vol2
-	 * @param dstPath
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 * 两个音频文件混合，可以一个是mp3格式，另一个是aac格式。　TODO:实际测试混合后的音频长度
+	 * @param srcPath1　　音频１的路径
+	 * @param srcPath2　　音频２的路径
+	 * @param vol1　　　音频１混合时的音量
+	 * @param vol2　　　音频２混合时的音量
+	 * @param dstPath　　目标音频存放的路径。建议是aac格式
 	 * @return
 	 */
 	private native int audioAdjustVolumeMix( String srcPath1,String srcPath2,float vol1,float vol2,String dstPath);
 	/**
-	 * 
-	 * @param srcPath1
-	 * @param srcPath2
-	 * @param decoder1
-	 * @param speed
-	 * @param dstPath
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 * 视频转场，第二个视频从右侧渐渐的显示（可以联系我们，做更多的视频转场方法）　TODO:没有第二个视频从哪里开始转场。
+	 * @param srcPath1　　第一个视频
+	 * @param srcPath2　　待要显示的第二个视频
+	 * @param decoder1　　第一个视频的解码器
+	 * @param speed　　　　视频的转场速度
+	 * @param dstPath　　目标视频存放路径　，需要是mp4
 	 * @return
 	 */
 	private native int videoTransferRight2Left( String srcPath1,String srcPath2,String decoder1,float speed,String dstPath);
 	/**
-	 * 
-	 * @param srcPath1
-	 * @param decoder
-	 * @param dstPath
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 * 视频垂直方向反转
+	 * @param srcPath1　　原视频
+	 * @param decoder　　视频的解码器名字
+	 * @param dstPath　　目标视频　需要是mp4格式。
 	 * @return
 	 */
 	private native int videoRotateVertically( String srcPath1,String decoder,String dstPath);
 	/**
-	 * 
-	 * @param srcPath1
-	 * @param decoder
-	 * @param dstPath
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 * 视频水平方向反转
+	 * @param srcPath1　　原视频
+	 * @param decoder　　视频的解码器名字
+	 * @param dstPath　　目标视频. 需要是mp4格式
 	 * @return
 	 */
 	private native int videoRotateHorizontally( String srcPath1,String decoder,String dstPath);
 	/**
-	 * 
-	 * @param srcPath1
-	 * @param decoder
-	 * @param dstPath
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 * 视频顺时针旋转９０度
+	 * @param srcPath1　　原视频
+	 * @param decoder　　　视频的解码器名字
+	 * @param dstPath　　　目标视频.需要是mp4格式
 	 * @return
 	 */
 	private native int videoRotate90Clockwise( String srcPath1,String decoder,String dstPath);
 	/**
-	 * 
-	 * @param srcPath1
-	 * @param decoder
-	 * @param dstPath
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 * 视频逆时针旋转９０度
+	 * @param srcPath1　原视频
+	 * @param decoder　　视频的解码器名字
+	 * @param dstPath　　目标视频，需要是mp4格式
 	 * @return
 	 */
 	private native int videoRotate90CounterClockwise( String srcPath1,String decoder,String dstPath);
 	/**
-	 * 
-	 * @param srcPath1
-	 * @param decoder
-	 * @param dstPath
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 * 视频倒序；比如正常的视频画面是一个人从左边走到右边，倒序后，人从右边倒退到左边，即视频画面发生了倒序
+	 * 注意：此处理会占用大量的内存，建议视频不要过长，尽量在１分钟内
+	 * @param srcPath1　原视频
+	 * @param decoder　　解码器的名字
+	 * @param dstPath　　目标视频，需要是mp4格式
 	 * @return
 	 */
 	private native int videoReverse( String srcPath1,String decoder,String dstPath);
 	/**
-	 * 
-	 * @param srcPath1
-	 * @param decoder
-	 * @param dstPath
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 * 音频倒序，和视频倒序类似，把原来正常的声音，处理成从后向前的声音。　适合在搞怪的一些场合。
+	 * 注意：　此处理会占用大量的内存，建议时长在１分钟以内
+	 *
+	 * @param srcPath1 原音频
+	 * @param dstPath　　目标音频
 	 * @return
 	 */
-	private native int audioReverse( String srcPath1,String decoder,String dstPath);
+	private native int audioReverse( String srcPath1,String dstPath);
 	/**
-	 * 
-	 * @param srcPath1
-	 * @param decoder
-	 * @param dstPath
+	 * 注意：此api仅在pc平台过，android没有测试：
+	 * 　把一个mp4文件中的音频部分和视频都倒序播放。
+	 * @param srcPath1　　原mp4文件
+	 * @param decoder　　mp4文件中的视频解码器名字
+	 * @param dstPath　　目标mp4文件存放路径
 	 * @return
 	 */
 	private native int avReverse( String srcPath1,String decoder,String dstPath);
